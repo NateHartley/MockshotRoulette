@@ -1,0 +1,36 @@
+Each round consists of turns.
+A new turn happens when someone fires a shot.
+A new rounds happens when someones health reaches 0.
+If there are no more shots left but players are still alive, the gun is loaded with more random rounds.
+
+
+-New Game-
+Health for both players is set back up to full.
+Gun is loaded with a certain amount of rounds.
+Each round is either live or a blank.
+
+Player 1 goes first in choosing to turn the gun at themself, or shoot Player 2.
+Player 2 does the same next turn.
+If a live round is shot, it will deplet its target's health by 1, go onto next turn.
+If a blank round is shot, it will do nothing, go onto next turn.
+Game ends when one of the player's health is at 0.
+
+-Next Turn-
+Gun has one rounds depleted
+
+
+while health > 0:
+    if rounds > 0:
+        if turn = p1:
+            p1 turn
+            p1 shoots someone
+            exit
+        if turn = p2:
+            p2 turn
+            p2 shoots someone
+            exit
+    else:
+        reload gun
+else:
+    choose winner, end round
+

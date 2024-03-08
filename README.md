@@ -1,2 +1,5 @@
 # BuckshotRouletteClone
-Clone of the game Buckshot Roulette.
+Recreation of the game Buckshot Roulette.
+
+# How to run
+python .\main.py
