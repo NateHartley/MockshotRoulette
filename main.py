@@ -48,7 +48,7 @@ def player1Choice(p1name, p2name, p1health, p2health, gun):
     elif choice == "2" and result == "b": # Shot player2 with blank round
         print("You shot", p2name, "with a blank round...\n")
     
-    print("It is now", p2name + "'s turn\n")#------------------------------------------------------------------------1
+    print("It is now", p2name + "'s turn\n")
 
     check_win(p1name, p2name, p1health, p2health)
 
