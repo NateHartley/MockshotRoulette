@@ -27,7 +27,6 @@ def set_health(round):
 
 
 def player1Choice(p1name, p2name, p1health, p2health, gun):
-    # i think the problem is that p1health is getting reset back to 2 here
     choice = input()
     time.sleep(1.5)
     result = gun.shoot()
@@ -105,7 +104,6 @@ def reload_gun(reload):
 
 
 def game(p1name, p2name, gun):
-    # put this all in a round1 function??
     time.sleep(1.5)
     print("""
     +----------------+
