@@ -3,7 +3,7 @@ import random
 # Each instance of Shotgun has rounds containing lives and blanks, and total rounds
 class Shotgun:
     def __init__(self, rounds, total_rounds):
-        self.rounds = rounds # Example: ["l", "b", "b"]
+        self.rounds = rounds # Example: ["L", "B", "B"]
         self.total_rounds = total_rounds # Example: 3
 
     # Instance method
