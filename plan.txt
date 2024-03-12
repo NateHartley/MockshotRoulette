@@ -13,3 +13,10 @@ Player 2 does the same next turn.
 If a live round is shot, it will deplet its target's health by 1, go onto next turn.
 If a blank round is shot, it will do nothing, go onto next turn.
 Game ends when one of the player's health is at 0.
+
+-A new round-
+Players healths are reset to a new max.
+Gun is reloaded with a new amount of live and blanks.
+
+Implement player class, containing p1name, p2name (always "The Dealer"), p1health, p2health
+no it just has name and health, create two different objects player_1 and player_2 and assign different vars
