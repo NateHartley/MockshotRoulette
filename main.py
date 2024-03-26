@@ -2,13 +2,15 @@ import shotgun
 import player
 import random
 import time
-from colorama import Fore, Back, Style
+import test
 
 def initialise():
     gun = shotgun.Shotgun(["L", "B", "B"], 3)
     player_1 = player.Player()
     player_2 = player.Player()
-    player_1.name = input("\nEnter your name: ")
+    slow_print('\n"Please sign the waiver."\n')
+    test.print_markdown_text()
+    player_1.name = input("\nEnter name: ")
     player_2.name = "The Dealer"
     print("\n" + player_1.name , "will be playing against", player_2.name + ".\n")
     round = 1
@@ -33,7 +35,7 @@ def player1Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
     print("")
 
     if choice == "1" and result == "L": # Shot self with live round
-        print("You shot yourself with a live round...\n")
+        print(u"You shot yourself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_1.health -= 1
         print("You have lost 1 health, remaining health =", player_1.health, "\n")
@@ -42,7 +44,7 @@ def player1Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
         print("You shot yourself with a blank round...\n")
         pause()
     elif choice == "2" and result == "L": # Shot player2 with live round
-        print("You shot", player_2.name, "with a live round...\n")
+        print("You shot", player_2.name, u"with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_2.health -= 1
         print(player_2.name, "has lost 1 health, remaining health =", player_2.health, "\n")
@@ -72,7 +74,7 @@ def player2Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
         print("--Player2 error choice--")
 
     if choice == 1 and result == "L": # Player2 shot you with live round
-        print(player_2.name, "shot you with a live round...\n")
+        print(player_2.name, u"shot you with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_1.health -= 1
         print("You have lost 1 health, remaining health =", player_1.health, "\n")
@@ -81,7 +83,7 @@ def player2Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
         print(player_2.name, "shot you with a blank round...\n")
         pause()
     elif choice == 2 and result == "L": # Player2 shot self with live round
-        print(player_2.name, "shot themself with a live round...\n")
+        print(player_2.name, u"shot themself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_2.health -= 1
         print(player_2.name, "has lost 1 health, remaining health =", player_2.health, "\n")
@@ -96,61 +98,26 @@ def player2Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
     return player_1.health, player_2.health
 
 
-def reload_gun(reload):
-    if reload == 0: # Start of round 1
-        return shotgun.Shotgun(["L", "B", "B"], 3)
-    elif reload == 1:
-        print("It now contains 5 rounds; 3 live, 2 blank.\n")
-        return shotgun.Shotgun(["L", "L", "L", "B", "B"], 5)
-    elif reload == 2: # Start of round 2
-        return shotgun.Shotgun(["L", "B"], 2)
-    elif reload == 3:
-        print("It now contains 4 rounds; 2 live, 2 blank.\n")
-        return shotgun.Shotgun(["L", "L", "B", "B"], 4)
-    elif reload == 4:
-        print("It now contains 5 rounds; 3 live, 2 blank.\n")
-        return shotgun.Shotgun(["L", "L", "L", "B", "B"], 5)
-    elif reload == 5: # Made up (DOUBLE CHECK ON VIDEOS)
-        print("It now contains 4 rounds; 2 live, 2 blank.\n")
-        return shotgun.Shotgun(["L", "L", "B", "B"], 5)
-    elif reload == 6: # Start of round 3
-        return shotgun.Shotgun(["L", "B", "B"], 3)
-    elif reload == 7:
-        print("It now contains 8 rounds; 4 live, 4 blank.\n")
-        return shotgun.Shotgun(["L", "L", "L", "L", "B", "B", "B", "B"], 8)
-    elif reload == 8:
-        print("It now contains 5 rounds; 3 live, 2 blank.\n")
-        return shotgun.Shotgun(["L", "L", "L", "B", "B"], 5)
-    elif reload == 9: # Made up (DOUBLE CHECK ON VIDEOS)
-        print("It now contains 6 rounds; 4 live, 2 blank.\n")
-        return shotgun.Shotgun(["L", "L", "L", "L", "B", "B"], 6)
-    else:
-        print("--Reload error--")
-        quit()
-
-    # put this in shotgun class as well
-
-
 def round_1():
     pause()
-    print("""
+    print(u"""\u001b[33m
     +----------------+
     | ROUND 1 BEGINS |
     +----------------+
-    """)
+    \u001b[0m""")
     pause()
-    print("Both player's health will start at 2.")
+    print("Both player's health will start at 2.\n")
     print("3 shots are loaded into the shotgun; 1 live, 2 blank. \n")
     pause()
 
 
 def round_2():
     pause()
-    print("""
+    print(u"""\u001b[33m
     +----------------+
     | ROUND 2 BEGINS |
     +----------------+
-    """)
+    \u001b[0m""")
     pause()
     print("Both player's health will start at 4.\n")
     print("The shotgun has been emptied...\n")
@@ -160,11 +127,11 @@ def round_2():
 
 def round_3():
     pause()
-    print("""
+    print(u"""\u001b[33m
     +----------------+
     | ROUND 3 BEGINS |
     +----------------+
-    """)
+    \u001b[0m""")
     pause()
     print("Both player's health will start at 6.\n")
     print("The shotgun has been emptied...\n")
@@ -180,19 +147,19 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
         player_1.set_health(round)
         player_2.set_health(round)
         reload = 0
-        gun = reload_gun(reload)
+        gun.reload_gun(reload)
     elif round == 2:
         round_2()
         player_1.set_health(round)
         player_2.set_health(round)
         reload = 2
-        gun = reload_gun(reload)
+        gun.reload_gun(reload)
     elif round == 3:
         round_3()
         player_1.set_health(round)
         player_2.set_health(round)
         reload = 6
-        gun = reload_gun(reload)
+        gun.reload_gun(reload)
     else:
         print("--Round error--")
         quit()
@@ -205,7 +172,7 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
             if turn == "p1":
                 print("It is your turn.\n")
                 pause()
-                print("Shoot yourself [1] or", player_2.name + "? [2] \n")
+                print(u"Shoot\u001b[31m\u001b[1m yourself [1]\u001b[0m or \u001b[31m\u001b[1m" + player_2.name, "[2]\u001b[0m ?\n")
                 player_1.health, player_2.health = player1Choice(player_1, player_2, gun)
 
             if turn == "p2":
@@ -218,7 +185,7 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
             if (player_1.health > 0 and player_2.health > 0): # Ensures reload doesn't + 2 when both health and rounds = 0
                 reload += 1
             pause()
-            gun = reload_gun(reload)
+            gun.reload_gun(reload)
             pause()
     else:
         check_win(player_1, player_2, round)
@@ -228,13 +195,19 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
 
 def pause():
     # Enable/disable pauses inbetween prints for faster testing
-    pause = True
+    pause = False
     if pause:
         return time.sleep(1.5)
 
 
+def slow_print(msg):
+    for i in msg:
+        print(i, end="", flush=True)
+        time.sleep(0.05)
+
+
 def main():
-    print(Style.RESET_ALL)
+    #test.coloured_text()
     play = input("\nPlay Buckshot Roulette [YES] [NO] \n")
     play = play.upper()
     if play == "Y" or play == "YES" or play == "YEA":
