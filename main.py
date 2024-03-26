@@ -38,19 +38,19 @@ def player1Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
         print(u"You shot yourself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_1.health -= 1
-        print("You have lost 1 health, remaining health =", player_1.health, "\n")
+        print("You have lost 1 health,", player_1.health, "health remaining.\n")
         pause()
     elif choice == "1" and result == "B": # Shot self with blank round
-        print("You shot yourself with a blank round...\n")
+        print("You shot yourself with a blank...\n")
         pause()
     elif choice == "2" and result == "L": # Shot player2 with live round
         print("You shot", player_2.name, u"with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_2.health -= 1
-        print(player_2.name, "has lost 1 health, remaining health =", player_2.health, "\n")
+        print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
         pause()
     elif choice == "2" and result == "B": # Shot player2 with blank round
-        print("You shot", player_2.name, "with a blank round...\n")
+        print("You shot", player_2.name, "with a blank...\n")
         pause()
     else:
         print("--Player1 error choice/result--")
@@ -77,19 +77,19 @@ def player2Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
         print(player_2.name, u"shot you with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_1.health -= 1
-        print("You have lost 1 health, remaining health =", player_1.health, "\n")
+        print("You have lost 1 health,", player_1.health, "health remaining.\n")
         pause()
     elif choice == 1 and result == "B": # Player2 shot you with blank round
-        print(player_2.name, "shot you with a blank round...\n")
+        print(player_2.name, "shot you with a blank...\n")
         pause()
     elif choice == 2 and result == "L": # Player2 shot self with live round
         print(player_2.name, u"shot themself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
         player_2.health -= 1
-        print(player_2.name, "has lost 1 health, remaining health =", player_2.health, "\n")
+        print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
         pause()
     elif choice == 2 and result == "B": # Player2 shot self with blank round
-        print(player_2.name, "shot themself with a blank round...\n")
+        print(player_2.name, "shot themself with a blank...\n")
         pause()
     else:
         print("--Player2 error choice/result--")
@@ -158,7 +158,7 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
         round_3()
         player_1.set_health(round)
         player_2.set_health(round)
-        reload = 6
+        reload = 7
         gun.reload_gun(reload)
     else:
         print("--Round error--")
@@ -208,17 +208,7 @@ def slow_print(msg):
 
 def main():
     #test.coloured_text()
-    play = input("\nPlay Buckshot Roulette [YES] [NO] \n")
-    play = play.upper()
-    if play == "Y" or play == "YES" or play == "YEA":
-        initialise()
-        quit()
-    elif play == "N" or play == "NO":
-        print("Exit game")
-        quit()
-    else:
-        print("Invalid input")
-        quit()
+    initialise()
 
 
 if __name__ == "__main__":

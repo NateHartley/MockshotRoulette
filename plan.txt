@@ -23,8 +23,10 @@ no it just has name and health, create two different objects player_1 and player
 
 TODO:
 - add items
-- add waiver
+- add waiver ✅
 - change colour of text
 - add some sort of image
 - add quotes around Dealer speach
 - use rich to make colour words better e.g. Round 1
+- add revive text/image after you shoot yourself with live
+- smarter ai for Dealer, higher chance of live round = shoot player
