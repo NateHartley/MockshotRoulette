@@ -20,3 +20,11 @@ Gun is reloaded with a new amount of live and blanks.
 
 Implement player class, containing p1name, p2name (always "The Dealer"), p1health, p2health
 no it just has name and health, create two different objects player_1 and player_2 and assign different vars
+
+TODO:
+- add items
+- add waiver
+- change colour of text
+- add some sort of image
+- add quotes around Dealer speach
+- use rich to make colour words better e.g. Round 1
