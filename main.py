@@ -1,5 +1,6 @@
 import shotgun
 import player
+import items
 import random
 import time
 import test
@@ -8,11 +9,14 @@ def initialise():
     gun = shotgun.Shotgun(["L", "B", "B"], 3)
     player_1 = player.Player()
     player_2 = player.Player()
+
     slow_print('\n"Please sign the waiver."\n')
     test.print_markdown_text()
+
     player_1.name = input("\nEnter name: ")
     player_2.name = "The Dealer"
     print("\n" + player_1.name , "will be playing against", player_2.name + ".\n")
+
     round = 1
     game(gun, player_1, player_2, round)
 
@@ -111,7 +115,7 @@ def round_1():
     pause()
 
 
-def round_2():
+def round_2(player_1: player.Player, player_2: player.Player):
     pause()
     print(u"""\u001b[33m
     +----------------+
@@ -119,6 +123,12 @@ def round_2():
     +----------------+
     \u001b[0m""")
     pause()
+    print("LET'S MAKE THIS  A LITTLE MORE INTERESTING ...\n")
+    pause()
+    print("TWO ITEMS EACH.\n")
+    pause()
+    print("MORE ITEMS BEFORE EVERY LOAD.\n")
+    select_items(player_1, player_2)
     print("Both player's health will start at 4.\n")
     print("The shotgun has been emptied...\n")
     print("2 shots are loaded into the shotgun; 1 live, 1 blank. \n")
@@ -139,6 +149,66 @@ def round_3():
     pause()
 
 
+def select_items(player_1: player.Player, player_2: player.Player):
+    items = ["Beer can", "Ciggarette", "Saw", "Magnifying glass", "Handcuffs"]
+    p1_len = len(player_1.inventory)
+    p2_len = len(player_2.inventory)
+
+    for _ in range(2):
+        if p1_len < 8 or p2_len < 8:
+            p1_item = random.randint(0, 4)
+            p2_item = random.randint(0, 4)
+            player_1.inventory.append(items[p1_item])
+            player_2.inventory.append(items[p2_item])
+        else:
+            print("You can only carry 8 items", p1_len, p2_len)
+
+    print("Your items are being chosen...")
+    pause()
+    print("\nItems in", player_1.name + "'s inventory: ")
+    for i in player_1.inventory:
+        print("- ", i)
+
+    print("\n", player_2.name + "'s items are being chosen...")
+    pause()
+    print("\nItems in", player_2.name + "'s inventory: ")
+    for i in player_2.inventory:
+        print("- ", i)
+
+
+def use_item(turn, player_1: player.Player, player_2: player.Player):
+    print("P1's Inv >>> ", player_1.inventory, player_1.name)
+
+    if turn == "p1":
+        if len(player_1.inventory) > 0: # If there are no items in inventory, skip selection step
+            print("Use an item? [YES] [NO]\n")
+            ans = input().upper()
+            ans.upper()
+            if ans == 'YES' or ans == 'YEA' or ans == 'YE' or ans == 'Y':
+                print("\nSelect an item from your inventory (type in a number)\n")
+                
+                n=1
+                for i in player_1.inventory:
+                    print("["+str(n)+"]", i)
+                    n+=1
+
+                inv_num = int(input())-1
+                item_selected = player_1.inventory[inv_num]
+                print("You have selected the", item_selected)
+
+                # TODO: IMPLEMENT ACTUAL ITEM USES HERE
+                items.Items.select_item(item_selected)
+
+                player_1.inventory.remove(item_selected)
+            else:
+                print("No item selected")
+        else:
+            print("No more items in", player_1.name + "'s inventory.\n")
+    else:
+        pass
+        # Dealer's turn, implement this later    
+
+
 def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player, round):
     turn = "p2" # set to p2 initially because it will get imediently flipped
 
@@ -149,12 +219,16 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
         reload = 0
         gun.reload_gun(reload)
     elif round == 2:
-        round_2()
+        player_1.reset_inv()
+        player_2.reset_inv()
+        round_2(player_1, player_2)
         player_1.set_health(round)
         player_2.set_health(round)
         reload = 2
         gun.reload_gun(reload)
     elif round == 3:
+        player_1.reset_inv()
+        player_2.reset_inv()
         round_3()
         player_1.set_health(round)
         player_2.set_health(round)
@@ -172,12 +246,20 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
             if turn == "p1":
                 print("It is your turn.\n")
                 pause()
+
+                if round > 1:
+                    use_item(turn, player_1, player_2)
+                
                 print(u"Shoot\u001b[31m\u001b[1m yourself [1]\u001b[0m or \u001b[31m\u001b[1m" + player_2.name, "[2]\u001b[0m ?\n")
                 player_1.health, player_2.health = player1Choice(player_1, player_2, gun)
 
             if turn == "p2":
                 print("It is", player_2.name + "'s turn.\n")
                 pause()
+
+                if round > 1:
+                    use_item(turn, player_1, player_2)
+                
                 print(player_2.name, "is deciding...\n")
                 player_1.health, player_2.health = player2Choice(player_1, player_2, gun)
         else:

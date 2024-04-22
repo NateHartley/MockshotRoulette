@@ -2,6 +2,7 @@ class Player:
     def __init__(self):
         self.name = ""
         self.health = None
+        self.inventory = []
 
 
     def set_health(self, round):
@@ -15,6 +16,9 @@ class Player:
         else:
             print("--set_health error--")
 
+    
+    def reset_inv(self):
+        self.inventory = []
 
     # loose_health()
             
