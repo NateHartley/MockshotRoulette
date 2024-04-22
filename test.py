@@ -1,6 +1,8 @@
 from rich.console import Console
 from rich.markdown import Markdown
 import sys
+import main
+import shotgun
 #import waiver
 
 console = Console()
@@ -27,6 +29,6 @@ def print_markdown_text(): # Works!
         console.print(Markdown(waiver_txt.read()))
 
 
-def testing():
-    # testing code
+def testing(gun: shotgun.Shotgun):
+    print(">>>>>>>>>>gin ", gun.rounds)
     pass

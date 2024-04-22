@@ -30,3 +30,20 @@ TODO:
 - use rich to make colour words better e.g. Round 1
 - add revive text/image after you shoot yourself with live
 - smarter ai for Dealer, higher chance of live round = shoot player
+
+SHOOTING YOURSELF WITH A BLANK SKIPS THE DEALER'S TURN
+
+
+# Items
+1. Beer can - eject current cartridge from chamber
+2. Cigarette - increase 1 health
+3. Saw - double damage on next shot
+4. Magnifying glass - see what is in chamber
+5. Handcuffs - take two turns
+
+Iventory is wiped at the beginning of each round.
+Items are only added at the start of round 2.
+A player can have 2 items before each reload in round 2.
+Once an item is used, it is removed from the inv.
+
+Items are the very first thing to be done at the beginning of round 2.
