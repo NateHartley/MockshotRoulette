@@ -32,30 +32,41 @@ def check_win(player_1: player.Player, player_2: player.Player, round):
             quit()
 
 
-def player1Choice(player_1: player.Player, player_2: player.Player, gun: shotgun.Shotgun):
+def player1Choice(player_1: player.Player, player_2: player.Player, result, double_damage):
     choice = input()
     pause()
-    result = gun.shoot()
     print("")
 
     if choice == "1" and result == "L": # Shot self with live round
         print(u"You shot yourself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
-        player_1.health -= 1
-        print("You have lost 1 health,", player_1.health, "health remaining.\n")
+        if double_damage == True:
+            player_1.health -= 2
+            print("You have lost 2 health,", player_1.health, "health remaining.\n")
+        else:
+            player_1.health -= 1
+            print("You have lost 1 health,", player_1.health, "health remaining.\n")
         pause()
+
     elif choice == "1" and result == "B": # Shot self with blank round
         print("You shot yourself with a blank...\n")
         pause()
+
     elif choice == "2" and result == "L": # Shot player2 with live round
         print("You shot", player_2.name, u"with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
-        player_2.health -= 1
-        print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
+        if double_damage == True:
+            player_2.health -= 2
+            print(player_2.name, "has lost 2 health,", player_2.health, "health remaining.\n")
+        else:
+            player_2.health -= 1
+            print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
         pause()
+
     elif choice == "2" and result == "B": # Shot player2 with blank round
         print("You shot", player_2.name, "with a blank...\n")
         pause()
+
     else:
         print("--Player1 error choice/result--")
         quit()
@@ -63,10 +74,9 @@ def player1Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
     return player_1.health, player_2.health
 
 
-def player2Choice(player_1: player.Player, player_2: player.Player, gun: shotgun.Shotgun):
+def player2Choice(player_1: player.Player, player_2: player.Player, result, dub_dam):
     choice = random.randint(1, 2)
     pause()
-    result = gun.shoot()
 
     if choice == 1:
         print(player_2.name, "has chosen to shoot you.\n")
@@ -80,21 +90,33 @@ def player2Choice(player_1: player.Player, player_2: player.Player, gun: shotgun
     if choice == 1 and result == "L": # Player2 shot you with live round
         print(player_2.name, u"shot you with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
-        player_1.health -= 1
-        print("You have lost 1 health,", player_1.health, "health remaining.\n")
+        if dub_dam == True:
+            player_1.health -= 2
+            print("You have lost 2 health,", player_1.health, "health remaining.\n")
+        else:
+            player_1.health -= 1
+            print("You have lost 1 health,", player_1.health, "health remaining.\n")
         pause()
+
     elif choice == 1 and result == "B": # Player2 shot you with blank round
         print(player_2.name, "shot you with a blank...\n")
         pause()
+
     elif choice == 2 and result == "L": # Player2 shot self with live round
         print(player_2.name, u"shot themself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
         pause()
-        player_2.health -= 1
-        print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
+        if dub_dam == True:
+            player_2.health -= 2
+            print(player_2.name, "has lost 2 health,", player_2.health, "health remaining.\n")
+        else:
+            player_2.health -= 1
+            print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
         pause()
+
     elif choice == 2 and result == "B": # Player2 shot self with blank round
         print(player_2.name, "shot themself with a blank...\n")
         pause()
+
     else:
         print("--Player2 error choice/result--")
         quit()
@@ -150,7 +172,7 @@ def round_3():
 
 
 def select_items(player_1: player.Player, player_2: player.Player):
-    items = ["Beer can", "Ciggarette", "Saw", "Magnifying glass", "Handcuffs"]
+    items = ["Beer can", "Cigarette", "Saw", "Magnifying glass", "Handcuffs"]
     p1_len = len(player_1.inventory)
     p2_len = len(player_2.inventory)
 
@@ -176,37 +198,71 @@ def select_items(player_1: player.Player, player_2: player.Player):
         print("- ", i)
 
 
-def use_item(turn, player_1: player.Player, player_2: player.Player):
+def player_item(turn, player_1: player.Player, player_2: player.Player, gun: shotgun.Shotgun, round, result):
     print("P1's Inv >>> ", player_1.inventory, player_1.name)
+    item = False
+    if round > 1:
+        if turn == "p1":
+            if len(player_1.inventory) > 0: # If there are no items in inventory, skip selection step
+                print("Use an item? [YES] [NO]\n")
+                ans = input().upper()
+                ans.upper()
+                if ans == 'YES' or ans == 'YEA' or ans == 'YE' or ans == 'Y':
+                    item = True
+                    print("\nSelect an item from your inventory\n")
+                    
+                    n=1
+                    for i in player_1.inventory:
+                        print("["+str(n)+"]", i)
+                        n+=1
 
-    if turn == "p1":
-        if len(player_1.inventory) > 0: # If there are no items in inventory, skip selection step
-            print("Use an item? [YES] [NO]\n")
-            ans = input().upper()
-            ans.upper()
-            if ans == 'YES' or ans == 'YEA' or ans == 'YE' or ans == 'Y':
-                print("\nSelect an item from your inventory (type in a number)\n")
-                
-                n=1
-                for i in player_1.inventory:
-                    print("["+str(n)+"]", i)
-                    n+=1
+                    inv_num = int(input())-1
+                    item_selected = player_1.inventory[inv_num]
+                    print("You have selected: ", item_selected)
 
-                inv_num = int(input())-1
-                item_selected = player_1.inventory[inv_num]
-                print("You have selected the", item_selected)
-
-                # TODO: IMPLEMENT ACTUAL ITEM USES HERE
-                items.Items.select_item(item_selected)
-
-                player_1.inventory.remove(item_selected)
+                else:
+                    print("No item selected")
             else:
-                print("No item selected")
-        else:
-            print("No more items in", player_1.name + "'s inventory.\n")
-    else:
-        pass
-        # Dealer's turn, implement this later    
+                print("No more items in", player_1.name + "'s inventory.\n")
+
+        if turn == 'p2':
+            # TODO: Dealer's turn
+            if len(player_2.inventory) > 0:
+                pass
+            else:
+                print("No more items in", player_2.name + "'s inventory.\n")
+            
+    if round > 1 and item:
+        match item_selected:
+            #TODO: add functionality to items
+
+            # Beer can - eject current cartridge from chamber
+            case "Beer can":
+                # result from player1choice is the cartridge that gets shot
+                if result == 'L':
+                    double_damage = True
+                #     pass # then do something
+                pass
+
+            # Cigarette - increase 1 health
+            case "Cigarette":
+                player_1.health += 1
+                # TODO: implement check to not use this if health is at max
+                pass
+
+            # Saw - double damage on next shot
+            case "Saw":
+                pass
+
+            # Magnifying glass - see what is in chamber
+            case "Magnifying glass":
+                pass
+
+            # Handcuffs - take two turns
+            case "Handcuffs":
+                pass
+
+        player_1.inventory.remove(item_selected)
 
 
 def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player, round):
@@ -242,26 +298,22 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
 
         if gun.total_rounds > 0:
             turn = "p2" if turn == "p1" else "p1" # Flips turn
+            result = gun.shoot()
 
             if turn == "p1":
                 print("It is your turn.\n")
                 pause()
-
-                if round > 1:
-                    use_item(turn, player_1, player_2)
-                
+                dub_dam = player_item(turn, player_1, player_2, gun, round, result)
                 print(u"Shoot\u001b[31m\u001b[1m yourself [1]\u001b[0m or \u001b[31m\u001b[1m" + player_2.name, "[2]\u001b[0m ?\n")
-                player_1.health, player_2.health = player1Choice(player_1, player_2, gun)
-
+                player_1.health, player_2.health = player1Choice(player_1, player_2, result, dub_dam)
+                
             if turn == "p2":
                 print("It is", player_2.name + "'s turn.\n")
                 pause()
-
-                if round > 1:
-                    use_item(turn, player_1, player_2)
-                
+                dub_dam = player_item(turn, player_1, player_2, gun, round, result)
                 print(player_2.name, "is deciding...\n")
-                player_1.health, player_2.health = player2Choice(player_1, player_2, gun)
+                player_1.health, player_2.health = player2Choice(player_1, player_2, result, dub_dam)
+                
         else:
             print("The shotgun has been emptied...\n")
             if (player_1.health > 0 and player_2.health > 0): # Ensures reload doesn't + 2 when both health and rounds = 0
