@@ -21,8 +21,9 @@ Gun is reloaded with a new amount of live and blanks.
 Implement player class, containing p1name, p2name (always "The Dealer"), p1health, p2health
 no it just has name and health, create two different objects player_1 and player_2 and assign different vars
 
-TODO:
-- add items
+#### TODO:
+- add items ✅
+- make items work
 - add waiver ✅
 - change colour of text
 - add some sort of image
@@ -30,11 +31,12 @@ TODO:
 - use rich to make colour words better e.g. Round 1
 - add revive text/image after you shoot yourself with live
 - smarter ai for Dealer, higher chance of live round = shoot player
+- implement Py Simple GUI to make game look amazing, actual interactive app rather than terminal or html https://www.pysimplegui.com/
 
 SHOOTING YOURSELF WITH A BLANK SKIPS THE DEALER'S TURN
 
 
-# Items
+#### Items
 1. Beer can - eject current cartridge from chamber
 2. Cigarette - increase 1 health
 3. Saw - double damage on next shot
