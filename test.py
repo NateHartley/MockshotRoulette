@@ -4,6 +4,7 @@ import sys
 import main
 import shotgun
 #import waiver
+import PySimpleGUI as pygui
 
 console = Console()
 
@@ -32,3 +33,26 @@ def print_markdown_text(): # Works!
 def testing(gun: shotgun.Shotgun):
     print(">>>>>>>>>>gin ", gun.rounds)
     pass
+
+
+def gui():
+    # All the stuff inside your window.
+    layout = [  [pygui.Text('Some text on Row 1')],
+                [pygui.Text('Enter something on Row 2'), pygui.InputText()],
+                [pygui.Button('Ok'), pygui.Button('Cancel')] ]
+
+    # Create the Window
+    window = pygui.Window('Hello Example', layout)
+
+    # Event Loop to process "events" and get the "values" of the inputs
+    while True:
+        event, values = window.read()
+
+        # if user closes window or clicks cancel
+        if event == pygui.WIN_CLOSED or event == 'Cancel':
+            break
+
+        print('You entered ', values[0])
+
+    window.close()
+    # https://www.pysimplegui.com/
