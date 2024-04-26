@@ -3,8 +3,9 @@ Recreation of the game Buckshot Roulette.<br>
 Original creator - Mike Klubnika<br>
 Link to game - https://mikeklubnika.itch.io/buckshot-roulette<br>
 
-#### How to set up
+## How to set up
 `python -m pip install rich`
+`python -m pip install pysimplegui`
 
-#### How to run
+## How to run
 `python .\main.py`
