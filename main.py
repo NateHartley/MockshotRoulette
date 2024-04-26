@@ -3,6 +3,7 @@ import player
 import random
 import time
 import test
+import dialog
 
 def initialise():
     gun = shotgun.Shotgun(["L", "B", "B"], 3)
@@ -125,53 +126,6 @@ def player2Choice(player_1: player.Player, player_2: player.Player, result, dub_
     return player_1.health, player_2.health
 
 
-def round_1():
-    pause()
-    print(u"""\u001b[33m
-    +----------------+
-    | ROUND 1 BEGINS |
-    +----------------+
-    \u001b[0m""")
-    pause()
-    print("Both player's health will start at 2.\n")
-    print("3 shots are loaded into the shotgun; 1 live, 2 blank. \n")
-    pause()
-
-
-def round_2(player_1: player.Player, player_2: player.Player):
-    pause()
-    print(u"""\u001b[33m
-    +----------------+
-    | ROUND 2 BEGINS |
-    +----------------+
-    \u001b[0m""")
-    pause()
-    print("LET'S MAKE THIS  A LITTLE MORE INTERESTING ...\n")
-    pause()
-    print("TWO ITEMS EACH.\n")
-    pause()
-    print("MORE ITEMS BEFORE EVERY LOAD.\n")
-    select_items(player_1, player_2)
-    print("Both player's health will start at 4.\n")
-    print("The shotgun has been emptied...\n")
-    print("2 shots are loaded into the shotgun; 1 live, 1 blank. \n")
-    pause()
-
-
-def round_3():
-    pause()
-    print(u"""\u001b[33m
-    +----------------+
-    | ROUND 3 BEGINS |
-    +----------------+
-    \u001b[0m""")
-    pause()
-    print("Both player's health will start at 6.\n")
-    print("The shotgun has been emptied...\n")
-    print("3 shots are loaded into the shotgun; 1 live, 2 blank. \n")
-    pause()
-
-
 def select_items(player_1: player.Player, player_2: player.Player):
     items = ["Beer can", "Cigarette", "Saw", "Magnifying glass", "Handcuffs"]
     p1_len = len(player_1.inventory)
@@ -200,7 +154,6 @@ def select_items(player_1: player.Player, player_2: player.Player):
 
 
 def player_item(turn, player_1: player.Player, player_2: player.Player, gun: shotgun.Shotgun, round, result):
-    print("P1's Inv >>> ", player_1.inventory, player_1.name)
     item = False
     if round > 1:
         if turn == "p1":
@@ -228,10 +181,10 @@ def player_item(turn, player_1: player.Player, player_2: player.Player, gun: sho
 
         if turn == 'p2':
             if len(player_2.inventory) > 0:
+                item = True
                 inv_num = random.randint(0, len(player_2.inventory)-1)
                 item_selected = player_2.inventory[inv_num]
                 print(player_2.name, "has selected: ", item_selected)
-                pass
             else:
                 print("No more items in", player_2.name + "'s inventory.\n")
             
@@ -241,6 +194,7 @@ def player_item(turn, player_1: player.Player, player_2: player.Player, gun: sho
     double_damage = False
     if round > 1 and item:
         match item_selected:
+            #TODO: pick another item after picking certain items
             
             # Beer can - eject current cartridge from chamber
             case "Beer can":
@@ -269,7 +223,7 @@ def player_item(turn, player_1: player.Player, player_2: player.Player, gun: sho
 
             # Saw - double damage on next shot
             case "Saw":
-                print("Your next shot will do double damage.")
+                print("\nThe next shot will do double damage.\n")
                 if result == 'L':
                     double_damage = True
                 pass
@@ -300,25 +254,31 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
     freeze_turn = False
 
     if round == 1:
-        round_1()
         player_1.set_health(round)
         player_2.set_health(round)
+        dialog.round_1()
+        dialog.round_1_info()
         reload = 0
         gun.reload_gun(reload)
     elif round == 2:
         player_1.reset_inv()
         player_2.reset_inv()
-        round_2(player_1, player_2)
         player_1.set_health(round)
         player_2.set_health(round)
+        dialog.round_2()
+        dialog.line_1()
+        select_items(player_1, player_2)
+        dialog.round_2_info()
         reload = 2
         gun.reload_gun(reload)
     elif round == 3:
         player_1.reset_inv()
         player_2.reset_inv()
-        round_3()
         player_1.set_health(round)
         player_2.set_health(round)
+        dialog.round_3()
+        dialog.round_3_info()
+        select_items(player_1, player_2)
         reload = 7
         gun.reload_gun(reload)
     else:
@@ -338,6 +298,7 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
                 dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, gun, round, result)
                 print(u"Shoot\u001b[31m\u001b[1m yourself [1]\u001b[0m or \u001b[31m\u001b[1m" + player_2.name, "[2]\u001b[0m ?\n")
                 player_1.health, player_2.health = player1Choice(player_1, player_2, result, dub_dam, eject)
+                eject = False
                 
             if turn == "p2":
                 print("It is", player_2.name + "'s turn.\n")
@@ -345,12 +306,15 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
                 dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, gun, round, result)
                 print(player_2.name, "is deciding...\n")
                 player_1.health, player_2.health = player2Choice(player_1, player_2, result, dub_dam, eject)
+                eject = False
                 
         else:
             print("The shotgun has been emptied...\n")
             if (player_1.health > 0 and player_2.health > 0): # Ensures reload doesn't + 2 when both health and rounds = 0
                 reload += 1
             pause()
+            if round > 1:
+                select_items(player_1, player_2)
             gun.reload_gun(reload)
             pause()
     else:
