@@ -1,6 +1,5 @@
 import shotgun
 import player
-import items
 import random
 import time
 import test
@@ -32,94 +31,96 @@ def check_win(player_1: player.Player, player_2: player.Player, round):
             quit()
 
 
-def player1Choice(player_1: player.Player, player_2: player.Player, result, double_damage):
-    choice = input()
-    pause()
-    print("")
-
-    if choice == "1" and result == "L": # Shot self with live round
-        print(u"You shot yourself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
+def player1Choice(player_1: player.Player, player_2: player.Player, result, double_damage, eject):
+    if not eject:
+        choice = input()
         pause()
-        if double_damage == True:
-            player_1.health -= 2
-            print("You have lost 2 health,", player_1.health, "health remaining.\n")
+        print("")
+
+        if choice == "1" and result == "L": # Shot self with live round
+            print(u"You shot yourself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
+            pause()
+            if double_damage == True:
+                player_1.health -= 2
+                print("You have lost 2 health,", player_1.health, "health remaining.\n")
+            else:
+                player_1.health -= 1
+                print("You have lost 1 health,", player_1.health, "health remaining.\n")
+            pause()
+
+        elif choice == "1" and result == "B": # Shot self with blank round
+            print("You shot yourself with a blank...\n")
+            pause()
+
+        elif choice == "2" and result == "L": # Shot player2 with live round
+            print("You shot", player_2.name, u"with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
+            pause()
+            if double_damage == True:
+                player_2.health -= 2
+                print(player_2.name, "has lost 2 health,", player_2.health, "health remaining.\n")
+            else:
+                player_2.health -= 1
+                print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
+            pause()
+
+        elif choice == "2" and result == "B": # Shot player2 with blank round
+            print("You shot", player_2.name, "with a blank...\n")
+            pause()
+
         else:
-            player_1.health -= 1
-            print("You have lost 1 health,", player_1.health, "health remaining.\n")
-        pause()
-
-    elif choice == "1" and result == "B": # Shot self with blank round
-        print("You shot yourself with a blank...\n")
-        pause()
-
-    elif choice == "2" and result == "L": # Shot player2 with live round
-        print("You shot", player_2.name, u"with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
-        pause()
-        if double_damage == True:
-            player_2.health -= 2
-            print(player_2.name, "has lost 2 health,", player_2.health, "health remaining.\n")
-        else:
-            player_2.health -= 1
-            print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
-        pause()
-
-    elif choice == "2" and result == "B": # Shot player2 with blank round
-        print("You shot", player_2.name, "with a blank...\n")
-        pause()
-
-    else:
-        print("--Player1 error choice/result--")
-        quit()
+            print("--Player1 error choice/result--")
+            quit()
 
     return player_1.health, player_2.health
 
 
-def player2Choice(player_1: player.Player, player_2: player.Player, result, dub_dam):
-    choice = random.randint(1, 2)
-    pause()
+def player2Choice(player_1: player.Player, player_2: player.Player, result, dub_dam, eject):
+    if not eject:
+        choice = random.randint(1, 2)
+        pause()
 
-    if choice == 1:
-        print(player_2.name, "has chosen to shoot you.\n")
-        pause()
-    elif choice == 2:
-        print(player_2.name, "has chosen to shoot themself.\n")
-        pause()
-    else:
-        print("--Player2 error choice--")
-
-    if choice == 1 and result == "L": # Player2 shot you with live round
-        print(player_2.name, u"shot you with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
-        pause()
-        if dub_dam == True:
-            player_1.health -= 2
-            print("You have lost 2 health,", player_1.health, "health remaining.\n")
+        if choice == 1:
+            print(player_2.name, "has chosen to shoot you.\n")
+            pause()
+        elif choice == 2:
+            print(player_2.name, "has chosen to shoot themself.\n")
+            pause()
         else:
-            player_1.health -= 1
-            print("You have lost 1 health,", player_1.health, "health remaining.\n")
-        pause()
+            print("--Player2 error choice--")
 
-    elif choice == 1 and result == "B": # Player2 shot you with blank round
-        print(player_2.name, "shot you with a blank...\n")
-        pause()
+        if choice == 1 and result == "L": # Player2 shot you with live round
+            print(player_2.name, u"shot you with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
+            pause()
+            if dub_dam == True:
+                player_1.health -= 2
+                print("You have lost 2 health,", player_1.health, "health remaining.\n")
+            else:
+                player_1.health -= 1
+                print("You have lost 1 health,", player_1.health, "health remaining.\n")
+            pause()
 
-    elif choice == 2 and result == "L": # Player2 shot self with live round
-        print(player_2.name, u"shot themself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
-        pause()
-        if dub_dam == True:
-            player_2.health -= 2
-            print(player_2.name, "has lost 2 health,", player_2.health, "health remaining.\n")
+        elif choice == 1 and result == "B": # Player2 shot you with blank round
+            print(player_2.name, "shot you with a blank...\n")
+            pause()
+
+        elif choice == 2 and result == "L": # Player2 shot self with live round
+            print(player_2.name, u"shot themself with a\u001b[31m\u001b[1m live round...\u001b[0m\n")
+            pause()
+            if dub_dam == True:
+                player_2.health -= 2
+                print(player_2.name, "has lost 2 health,", player_2.health, "health remaining.\n")
+            else:
+                player_2.health -= 1
+                print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
+            pause()
+
+        elif choice == 2 and result == "B": # Player2 shot self with blank round
+            print(player_2.name, "shot themself with a blank...\n")
+            pause()
+
         else:
-            player_2.health -= 1
-            print(player_2.name, "has lost 1 health,", player_2.health, "health remaining.\n")
-        pause()
-
-    elif choice == 2 and result == "B": # Player2 shot self with blank round
-        print(player_2.name, "shot themself with a blank...\n")
-        pause()
-
-    else:
-        print("--Player2 error choice/result--")
-        quit()
+            print("--Player2 error choice/result--")
+            quit()
 
     return player_1.health, player_2.health
 
@@ -226,47 +227,77 @@ def player_item(turn, player_1: player.Player, player_2: player.Player, gun: sho
                 print("No more items in", player_1.name + "'s inventory.\n")
 
         if turn == 'p2':
-            # TODO: Dealer's turn
             if len(player_2.inventory) > 0:
+                inv_num = random.randint(0, len(player_2.inventory)-1)
+                item_selected = player_2.inventory[inv_num]
+                print(player_2.name, "has selected: ", item_selected)
                 pass
             else:
                 print("No more items in", player_2.name + "'s inventory.\n")
             
+    check = False # check is set to true if item is selected but cant be used
+    eject = False
+    freeze_turn = False
+    double_damage = False
     if round > 1 and item:
         match item_selected:
-            #TODO: add functionality to items
-
+            
             # Beer can - eject current cartridge from chamber
             case "Beer can":
-                # result from player1choice is the cartridge that gets shot
+                eject = True
                 if result == 'L':
-                    double_damage = True
-                #     pass # then do something
-                pass
+                    print("A live round was ejected from the chamber.")
+                else:
+                    print("A blank round was ejected from the chamber.")
 
             # Cigarette - increase 1 health
             case "Cigarette":
-                player_1.health += 1
-                # TODO: implement check to not use this if health is at max
-                pass
+                # If health is already at max, don't add more health
+                if (round == 2 and player_1.health == 4) or (round == 3 and player_1.health == 6):
+                    check = True
+                    print("\nYour health is already maxxed. You can't use this item.\n")
+                elif (round == 2 and player_2.health == 4) or (round == 3 and player_2.health == 6):
+                    check = True
+                    print("\n", player_2.health, "'s health is already maxxed. They can't use this item.\n")
+                else:
+                    if turn == 'p1':
+                        player_1.health += 1
+                        print("Your health has now increased to ", player_1.health)
+                    else:
+                        player_2.health += 1
+                        print(player_2.health, "'s health has now increased to ", player_2.health)
 
             # Saw - double damage on next shot
             case "Saw":
+                print("Your next shot will do double damage.")
+                if result == 'L':
+                    double_damage = True
                 pass
 
             # Magnifying glass - see what is in chamber
             case "Magnifying glass":
-                pass
+                if result == 'L':
+                    print("The magnifying glass shows you the next shot in the chamber is a live round.")
+                else:
+                    print("The magnifying glass shows you the next shot in the chamber is a blank round.")
 
             # Handcuffs - take two turns
             case "Handcuffs":
+                freeze_turn = True
                 pass
+        
+        if not check: # If check is True, item not removed from inventory as it can't be used
+            if turn == 'p1':
+                player_1.inventory.remove(item_selected)
+            else:
+                player_2.inventory.remove(item_selected)
 
-        player_1.inventory.remove(item_selected)
+    return double_damage, eject, freeze_turn
 
 
 def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player, round):
     turn = "p2" # set to p2 initially because it will get imediently flipped
+    freeze_turn = False
 
     if round == 1:
         round_1()
@@ -297,22 +328,23 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
     while(player_1.health > 0 and player_2.health > 0):
 
         if gun.total_rounds > 0:
-            turn = "p2" if turn == "p1" else "p1" # Flips turn
+            if not freeze_turn:
+                turn = "p2" if turn == "p1" else "p1" # Flips turn
             result = gun.shoot()
 
             if turn == "p1":
                 print("It is your turn.\n")
                 pause()
-                dub_dam = player_item(turn, player_1, player_2, gun, round, result)
+                dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, gun, round, result)
                 print(u"Shoot\u001b[31m\u001b[1m yourself [1]\u001b[0m or \u001b[31m\u001b[1m" + player_2.name, "[2]\u001b[0m ?\n")
-                player_1.health, player_2.health = player1Choice(player_1, player_2, result, dub_dam)
+                player_1.health, player_2.health = player1Choice(player_1, player_2, result, dub_dam, eject)
                 
             if turn == "p2":
                 print("It is", player_2.name + "'s turn.\n")
                 pause()
-                dub_dam = player_item(turn, player_1, player_2, gun, round, result)
+                dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, gun, round, result)
                 print(player_2.name, "is deciding...\n")
-                player_1.health, player_2.health = player2Choice(player_1, player_2, result, dub_dam)
+                player_1.health, player_2.health = player2Choice(player_1, player_2, result, dub_dam, eject)
                 
         else:
             print("The shotgun has been emptied...\n")
@@ -342,6 +374,7 @@ def slow_print(msg):
 
 def main():
     #test.coloured_text()
+    #test.gui() # This works!
     initialise()
 
 
