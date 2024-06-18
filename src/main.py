@@ -153,15 +153,23 @@ def select_items(player_1: player.Player, player_2: player.Player):
         print("- ", i)
 
 
-def player_item(turn, player_1: player.Player, player_2: player.Player, gun: shotgun.Shotgun, round, result):
+def player_item(turn, player_1: player.Player, player_2: player.Player, round, result):
+    repeat = True
     item = False
+    check = False # check is set to true if item is selected but cant be used
+    eject = False
+    freeze_turn = False
+    double_damage = False
+    
     if round > 1:
+        ##while repeat: ## This is majorly messing things up
         if turn == "p1":
             if len(player_1.inventory) > 0: # If there are no items in inventory, skip selection step
                 print("Use an item? [YES] [NO]\n")
                 ans = input().upper()
                 ans.upper()
                 if ans == 'YES' or ans == 'YEA' or ans == 'YE' or ans == 'Y':
+                    repeat = True
                     item = True
                     print("\nSelect an item from your inventory\n")
                     
@@ -176,75 +184,76 @@ def player_item(turn, player_1: player.Player, player_2: player.Player, gun: sho
 
                 else:
                     print("No item selected")
+                    repeat = False
             else:
                 print("No more items in", player_1.name + "'s inventory.\n")
+                repeat = False
 
-        if turn == 'p2':
-            if len(player_2.inventory) > 0:
-                item = True
-                inv_num = random.randint(0, len(player_2.inventory)-1)
-                item_selected = player_2.inventory[inv_num]
-                print(player_2.name, "has selected: ", item_selected)
-            else:
-                print("No more items in", player_2.name + "'s inventory.\n")
-            
-    check = False # check is set to true if item is selected but cant be used
-    eject = False
-    freeze_turn = False
-    double_damage = False
-    if round > 1 and item:
-        match item_selected:
-            #TODO: pick another item after picking certain items
-            
-            # Beer can - eject current cartridge from chamber
-            case "Beer can":
-                eject = True
-                if result == 'L':
-                    print("A live round was ejected from the chamber.")
+            if turn == 'p2':
+                if len(player_2.inventory) > 0:
+                    item = True
+                    inv_num = random.randint(0, len(player_2.inventory)-1)
+                    item_selected = player_2.inventory[inv_num]
+                    print(player_2.name, "has selected: ", item_selected)
+                    repeat = True
                 else:
-                    print("A blank round was ejected from the chamber.")
-
-            # Cigarette - increase 1 health
-            case "Cigarette":
-                # If health is already at max, don't add more health
-                if (round == 2 and player_1.health == 4) or (round == 3 and player_1.health == 6):
-                    check = True
-                    print("\nYour health is already maxxed. You can't use this item.\n")
-                elif (round == 2 and player_2.health == 4) or (round == 3 and player_2.health == 6):
-                    check = True
-                    print("\n", player_2.health, "'s health is already maxxed. They can't use this item.\n")
-                else:
-                    if turn == 'p1':
-                        player_1.health += 1
-                        print("Your health has now increased to ", player_1.health)
-                    else:
-                        player_2.health += 1
-                        print(player_2.health, "'s health has now increased to ", player_2.health)
-
-            # Saw - double damage on next shot
-            case "Saw":
-                print("\nThe next shot will do double damage.\n")
-                if result == 'L':
-                    double_damage = True
-                pass
-
-            # Magnifying glass - see what is in chamber
-            case "Magnifying glass":
-                if result == 'L':
-                    print("The magnifying glass shows you the next shot in the chamber is a live round.")
-                else:
-                    print("The magnifying glass shows you the next shot in the chamber is a blank round.")
-
-            # Handcuffs - take two turns
-            case "Handcuffs":
-                freeze_turn = True
-                pass
+                    print("No more items in", player_2.name + "'s inventory.\n")
+                    repeat = False
+                
         
-        if not check: # If check is True, item not removed from inventory as it can't be used
-            if turn == 'p1':
-                player_1.inventory.remove(item_selected)
-            else:
-                player_2.inventory.remove(item_selected)
+        if round > 1 and item:
+            match item_selected:
+                #TODO: pick another item after picking certain items, basically keep going until player says no
+                
+                # Beer can - eject current cartridge from chamber
+                case "Beer can":
+                    eject = True
+                    if result == 'L':
+                        print("A live round was ejected from the chamber.")
+                    else:
+                        print("A blank round was ejected from the chamber.")
+
+                # Cigarette - increase 1 health
+                case "Cigarette":
+                    # If health is already at max, don't add more health
+                    if (round == 2 and player_1.health == 4) or (round == 3 and player_1.health == 6):
+                        check = True
+                        print("\nYour health is already maxxed. You can't use this item.\n")
+                    elif (round == 2 and player_2.health == 4) or (round == 3 and player_2.health == 6):
+                        check = True
+                        print("\n", player_2.health, "'s health is already maxxed. They can't use this item.\n")
+                    else:
+                        if turn == 'p1':
+                            player_1.health += 1
+                            print("Your health has now increased to ", player_1.health)
+                        else:
+                            player_2.health += 1
+                            print(player_2.health, "'s health has now increased to ", player_2.health)
+
+                # Saw - double damage on next shot
+                case "Saw":
+                    print("\nThe next shot will do double damage.\n")
+                    if result == 'L':
+                        double_damage = True
+                    pass
+
+                # Magnifying glass - see what is in chamber
+                case "Magnifying glass":
+                    if result == 'L':
+                        print("The magnifying glass shows you the next shot in the chamber is a live round.")
+                    else:
+                        print("The magnifying glass shows you the next shot in the chamber is a blank round.")
+
+                # Handcuffs - take two turns
+                case "Handcuffs":
+                    freeze_turn = True
+                    pass
+            
+            if not check: # If check is True, item not removed from inventory as it can't be used
+                if turn == 'p1':
+                    player_1.inventory.remove(item_selected)
+                else:
+                    player_2.inventory.remove(item_selected)
 
     return double_damage, eject, freeze_turn
 
@@ -286,6 +295,8 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
         quit()
 
     while(player_1.health > 0 and player_2.health > 0):
+        #dub_dam = False
+        #eject = False
 
         if gun.total_rounds > 0:
             if not freeze_turn:
@@ -295,7 +306,9 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
             if turn == "p1":
                 print("It is your turn.\n")
                 pause()
-                dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, gun, round, result)
+                # set all vars to false here, then it wont be turned to true inside player_item, 
+                # therefore if item use is true but player want to use another item, that previous item does get sent to false
+                dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, round, result)
                 print(u"Shoot\u001b[31m\u001b[1m yourself [1]\u001b[0m or \u001b[31m\u001b[1m" + player_2.name, "[2]\u001b[0m ?\n")
                 player_1.health, player_2.health = player1Choice(player_1, player_2, result, dub_dam, eject)
                 eject = False
@@ -303,7 +316,7 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
             if turn == "p2":
                 print("It is", player_2.name + "'s turn.\n")
                 pause()
-                dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, gun, round, result)
+                dub_dam, eject, freeze_turn = player_item(turn, player_1, player_2, round, result)
                 print(player_2.name, "is deciding...\n")
                 player_1.health, player_2.health = player2Choice(player_1, player_2, result, dub_dam, eject)
                 eject = False

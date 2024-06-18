@@ -52,6 +52,7 @@ def round_3():
 
 def round_3_info():
     main.pause()
+    print("All items have been removed from your inventory.\n")
     print("Both player's health will start at 6.\n")
     print("The shotgun has been emptied...\n")
     print("3 shots are loaded into the shotgun; 1 live, 2 blank. \n")

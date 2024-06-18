@@ -23,7 +23,7 @@ no it just has name and health, create two different objects player_1 and player
 
 #### TODO:
 - add items ✅
-- make items work
+- make items work ✅
 - add waiver ✅
 - change colour of text
 - add some sort of image
