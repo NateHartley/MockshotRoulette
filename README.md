@@ -1,4 +1,4 @@
-# BuckshotRoulette
+# MockshotRoulette
 Recreation of the game Buckshot Roulette.<br>
 Original creator - Mike Klubnika<br>
 Link to game - https://mikeklubnika.itch.io/buckshot-roulette<br>
