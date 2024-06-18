@@ -167,7 +167,7 @@ def player_item(turn, player_1: player.Player, player_2: player.Player, round, r
             if len(player_1.inventory) > 0: # If there are no items in inventory, skip selection step
                 print("Use an item? [YES] [NO]\n")
                 ans = input().upper()
-                ans.upper()
+                ans.upper() ## why two upper?
                 if ans == 'YES' or ans == 'YEA' or ans == 'YE' or ans == 'Y':
                     repeat = True
                     item = True
@@ -336,8 +336,8 @@ def game(gun: shotgun.Shotgun, player_1: player.Player, player_2: player.Player,
         game(gun, player_1, player_2, round)
 
 
+# Enable/disable pauses inbetween prints for faster testing
 def pause():
-    # Enable/disable pauses inbetween prints for faster testing
     pause = False
     if pause:
         return time.sleep(1.5)

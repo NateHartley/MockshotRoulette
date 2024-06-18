@@ -26,12 +26,12 @@ def coloured_text(): # Works!
 
 
 def print_markdown_text(): # Works!
-    with open("waiver.md", "r+") as waiver_txt:
+    with open("../waiver.md", "r+") as waiver_txt:
         console.print(Markdown(waiver_txt.read()))
 
 
 def testing(gun: shotgun.Shotgun):
-    print(">>>>>>>>>>gin ", gun.rounds)
+    print(">>>>>>>>>>gun ", gun.rounds)
     pass
 
 
