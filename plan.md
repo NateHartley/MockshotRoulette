@@ -25,6 +25,7 @@ no it just has name and health, create two different objects player_1 and player
 - add items ✅
 - make items work ✅
 - add waiver ✅
+- last two health cannot be regenerated?
 - change colour of text
 - add some sort of image
 - add quotes around Dealer speach
